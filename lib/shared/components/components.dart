@@ -37,3 +37,9 @@ void navigateTo(context, widget) => Navigator.push(
         builder: (context) => widget,
       ),
     );
+void navigateAndFinish(context, widget) => Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => widget,
+      ),
+    );

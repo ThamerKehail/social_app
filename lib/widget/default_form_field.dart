@@ -8,6 +8,7 @@ class DefaultFormField extends StatelessWidget {
   final IconData prefix;
   final IconData? suffix;
   final String hint;
+  final bool? obscureText;
 
   const DefaultFormField(
       {Key? key,
@@ -17,7 +18,8 @@ class DefaultFormField extends StatelessWidget {
       required this.prefix,
       required this.hint,
       this.suffix,
-      this.suffixOnTap})
+      this.suffixOnTap,
+      this.obscureText})
       : super(key: key);
 
   @override
@@ -26,11 +28,18 @@ class DefaultFormField extends StatelessWidget {
       controller: controller,
       keyboardType: keyboardType,
       validator: validate,
+      obscureText: obscureText ?? false,
       decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(5),
           ),
           focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(5),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(5),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(5),
           ),
           prefixIcon: Icon(prefix),
