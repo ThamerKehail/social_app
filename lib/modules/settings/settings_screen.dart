@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/layout/cubit/social_cubit.dart';
 import 'package:social_app/models/user_model.dart';
+import 'package:social_app/modules/edit_profile/edit_profile_screen.dart';
+import 'package:social_app/shared/components/components.dart';
 import 'package:social_app/widget/defaul_buton.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -109,7 +111,9 @@ class SettingsScreen extends StatelessWidget {
                     width: 8,
                   ),
                   OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      navigateTo(context, const EditProfileScreen());
+                    },
                     child: const Icon(Icons.edit_outlined),
                   ),
                 ],

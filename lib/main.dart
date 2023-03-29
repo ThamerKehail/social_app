@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/layout/social_layout.dart';
+import 'package:social_app/modules/edit_profile/cubit/edit_profile_cubit.dart';
 import 'package:social_app/modules/login/login_screen.dart';
 import 'package:social_app/modules/register/cubit/register_cubit.dart';
 import 'package:social_app/shared/network/local/cache_helper.dart';
@@ -17,7 +18,7 @@ void main() async {
   );
 
   CacheHelper.init();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -37,11 +38,14 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (_) => SocialCubit()..getUserData(),
         ),
+        BlocProvider(
+          create: (_) => EditProfileCubit()..getUserData(),
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
-          appBarTheme: AppBarTheme(
+          appBarTheme: const AppBarTheme(
             backgroundColor: Colors.white,
             elevation: 0.0,
           ),

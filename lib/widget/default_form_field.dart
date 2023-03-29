@@ -43,7 +43,7 @@ class DefaultFormField extends StatelessWidget {
             borderRadius: BorderRadius.circular(5),
           ),
           prefixIcon: Icon(prefix),
-          hintText: hint,
+          label: Text(hint),
           suffixIcon: IconButton(
             onPressed: suffixOnTap,
             icon: Icon(suffix),

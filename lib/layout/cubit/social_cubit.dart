@@ -17,6 +17,8 @@ class SocialCubit extends Cubit<SocialState> {
   SocialCubit() : super(SocialInitialState());
   static SocialCubit get(context) => BlocProvider.of(context);
   int currentIndex = 0;
+  TextEditingController userName = TextEditingController();
+  TextEditingController bio = TextEditingController();
   List<Widget> screens = [
     const FeedsScreen(),
     const ChatScreen(),
