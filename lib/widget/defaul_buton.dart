@@ -12,7 +12,7 @@ class DefaultButton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: double.infinity,
-        height: 55,
+        height: 45,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
           color: Colors.blue,

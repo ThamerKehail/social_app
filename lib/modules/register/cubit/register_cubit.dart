@@ -16,7 +16,6 @@ class RegisterCubit extends Cubit<RegisterStates> {
   TextEditingController phone = TextEditingController();
   late final String uid;
   userRegister() {
-    print("Register");
     emit(RegisterLoadingState());
     FirebaseAuth.instance
         .createUserWithEmailAndPassword(
@@ -36,11 +35,16 @@ class RegisterCubit extends Cubit<RegisterStates> {
 
   userCreate() {
     UserModel user = UserModel(
-      email: email.text,
-      phone: phone.text,
-      uid: uid,
-      userName: userName.text,
-    );
+        email: email.text,
+        phone: phone.text,
+        uid: uid,
+        userName: userName.text,
+        isEmailVerified: false,
+        image:
+            'https://www.bing.com/th?id=OIP.NfJCEFT-pMf8Me5cyKfgRgHaFH&w=150&h=104&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2',
+        bio: 'write your bio..',
+        cover:
+            'https://rfonexus.com/wp-content/uploads/2021/08/developer_1628330394-1068x709.jpg');
     FirebaseFirestore.instance
         .collection('users')
         .doc(uid)

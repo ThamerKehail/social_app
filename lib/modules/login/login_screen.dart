@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_app/layout/social_layout.dart';
 import 'package:social_app/modules/login/cubit/login_cubit.dart';
 import 'package:social_app/modules/login/cubit/login_state.dart';
 import 'package:social_app/modules/register/register_screen.dart';
 import 'package:social_app/shared/components/components.dart';
+import 'package:social_app/shared/network/local/cache_helper.dart';
 import 'package:social_app/widget/defaul_buton.dart';
 import 'package:social_app/widget/default_form_field.dart';
 import 'package:social_app/widget/default_text_buton.dart';
@@ -17,6 +19,11 @@ class LoginScreen extends StatelessWidget {
       listener: (context, state) {
         if (state is LoginErrorState) {
           showToast(txt: state.error, state: ToastState.ERROR);
+        }
+        if (state is LoginSuccessState) {
+          CacheHelper.saveData(key: 'uid', value: state.uid).then((value) {
+            navigateTo(context, const SocialLayout());
+          });
         }
       },
       builder: (context, state) {
