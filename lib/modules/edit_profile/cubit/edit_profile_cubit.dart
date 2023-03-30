@@ -13,6 +13,9 @@ part 'edit_profile_state.dart';
 
 class EditProfileCubit extends Cubit<EditProfileState> {
   EditProfileCubit() : super(EditProfileInitialState());
+  TextEditingController userName = TextEditingController();
+  TextEditingController bio = TextEditingController();
+  TextEditingController phone = TextEditingController();
 
   late UserModel userModel;
   void getUserData() {
@@ -21,9 +24,16 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         .doc(CacheHelper.getData(key: 'uid'))
         .get()
         .then((value) {
+      print("uid========${CacheHelper.getData(key: 'uid')}");
       userModel = UserModel.fromJson(value.data()!);
+      userName.text = userModel.userName!;
+      bio.text = userModel.bio!;
+      phone.text = userModel.phone!;
+      emit(GetUserDataSuccessState());
       print(userModel.email);
       print(value.data());
+    }).catchError((error) {
+      emit(GetUserDataErrorState());
     });
   }
 
@@ -57,7 +67,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     }
   }
 
-  String imageUrl = '';
+  String? imageUrl;
   void uploadProfileImage() {
     firebase_storage.FirebaseStorage.instance
         .ref()
@@ -66,7 +76,9 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         .then((value) {
       value.ref.getDownloadURL().then((value) {
         imageUrl = value;
+
         emit(UploadProfileImageSuccessState());
+        update();
         print(value);
       }).catchError((error) {
         emit(UploadProfileImageErrorState());
@@ -76,7 +88,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     });
   }
 
-  String coverImageUrl = '';
+  String? coverImageUrl;
   void uploadCoverImage() {
     firebase_storage.FirebaseStorage.instance
         .ref()
@@ -86,6 +98,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
       value.ref.getDownloadURL().then((value) {
         coverImageUrl = value;
         emit(UploadProfileImageSuccessState());
+        update();
         print(value);
       }).catchError((error) {
         emit(UploadProfileImageErrorState());
@@ -96,13 +109,41 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   }
 
   void updateUser() {
+    if (coverImage != null && image != null) {
+      print("cover and image");
+      uploadCoverImage();
+      uploadProfileImage();
+    } else if (coverImage != null) {
+      uploadCoverImage();
+    } else if (image != null) {
+      uploadProfileImage();
+    } else {
+      update();
+    }
+  }
+
+  void update() {
+    emit(UserUpdateLoadingState());
+    UserModel user = UserModel(
+      bio: bio.text.isEmpty ? userModel.bio : bio.text,
+      image: imageUrl ?? userModel.image,
+      isEmailVerified: false,
+      cover: coverImageUrl ?? userModel.cover,
+      email: userModel.email,
+      phone: phone.text.isEmpty ? userModel.phone : phone.text,
+      uid: userModel.uid,
+      userName: userName.text.isEmpty ? userModel.userName : userName.text,
+    );
     FirebaseFirestore.instance
         .collection('users')
         .doc(userModel.uid)
-        .update(data)
-        .then((value) {})
-        .catchError(
-          (error) {},
-        );
+        .update(user.toMap())
+        .then((value) {
+      getUserData();
+    }).catchError(
+      (error) {
+        emit(UserUpdateErrorState());
+      },
+    );
   }
 }

@@ -30,16 +30,16 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
+          create: (_) => EditProfileCubit()..getUserData(),
+        ),
+        BlocProvider(
           create: (_) => LoginCubit(),
         ),
         BlocProvider(
           create: (_) => RegisterCubit(),
         ),
         BlocProvider(
-          create: (_) => SocialCubit()..getUserData(),
-        ),
-        BlocProvider(
-          create: (_) => EditProfileCubit()..getUserData(),
+          create: (_) => SocialCubit(),
         ),
       ],
       child: MaterialApp(

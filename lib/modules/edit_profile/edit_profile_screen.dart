@@ -37,7 +37,7 @@ class EditProfileScreen extends StatelessWidget {
               DefaultTextButton(
                 text: "Update",
                 onTap: () {
-                  EditProfileCubit.get(context).uploadProfileImage();
+                  EditProfileCubit.get(context).updateUser();
                 },
               ),
             ],
@@ -46,6 +46,8 @@ class EditProfileScreen extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
+                if (state is UserUpdateLoadingState)
+                  const LinearProgressIndicator(),
                 SizedBox(
                   height: 200,
                   child: Stack(
@@ -63,7 +65,7 @@ class EditProfileScreen extends StatelessWidget {
                                   image: DecorationImage(
                                       image: coverImage == null
                                           ? NetworkImage(
-                                              '${BlocProvider.of<SocialCubit>(context).userModel.cover}')
+                                              '${EditProfileCubit.get(context).userModel.cover}')
                                           : FileImage(coverImage)
                                               as ImageProvider,
                                       fit: BoxFit.cover)),
@@ -91,10 +93,9 @@ class EditProfileScreen extends StatelessWidget {
                             child: CircleAvatar(
                               radius: 60,
                               backgroundImage: profileImage == null
-                                  ? NetworkImage(
-                                      BlocProvider.of<SocialCubit>(context)
-                                          .userModel
-                                          .image!)
+                                  ? NetworkImage(EditProfileCubit.get(context)
+                                      .userModel
+                                      .image!)
                                   : FileImage(profileImage) as ImageProvider,
                             ),
                           ),
@@ -118,7 +119,7 @@ class EditProfileScreen extends StatelessWidget {
                   height: 15,
                 ),
                 DefaultFormField(
-                    controller: SocialCubit.get(context).userName,
+                    controller: EditProfileCubit.get(context).userName,
                     keyboardType: TextInputType.name,
                     validate: (value) {
                       if (value!.isEmpty) {
@@ -133,7 +134,23 @@ class EditProfileScreen extends StatelessWidget {
                   height: 10,
                 ),
                 DefaultFormField(
-                    controller: SocialCubit.get(context).bio,
+                  controller: EditProfileCubit.get(context).phone,
+                  keyboardType: TextInputType.phone,
+                  validate: (value) {
+                    if (value!.isEmpty) {
+                      return "Phone must not be empty";
+                    } else {
+                      return null;
+                    }
+                  },
+                  prefix: Icons.phone_outlined,
+                  hint: "Phone",
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                DefaultFormField(
+                    controller: EditProfileCubit.get(context).bio,
                     keyboardType: TextInputType.text,
                     validate: (value) {
                       if (value!.isEmpty) {

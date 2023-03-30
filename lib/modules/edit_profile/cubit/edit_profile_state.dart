@@ -16,3 +16,11 @@ class EditProfileCoverErrorState extends EditProfileState {}
 class UploadProfileImageSuccessState extends EditProfileState {}
 
 class UploadProfileImageErrorState extends EditProfileState {}
+
+class UserUpdateLoadingState extends EditProfileState {}
+
+class UserUpdateErrorState extends EditProfileState {}
+
+class GetUserDataSuccessState extends EditProfileState {}
+
+class GetUserDataErrorState extends EditProfileState {}

@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_app/layout/cubit/social_cubit.dart';
 import 'package:social_app/models/user_model.dart';
+import 'package:social_app/modules/edit_profile/cubit/edit_profile_cubit.dart';
 import 'package:social_app/modules/edit_profile/edit_profile_screen.dart';
 import 'package:social_app/shared/components/components.dart';
-import 'package:social_app/widget/defaul_buton.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<SocialCubit, SocialState>(
+    return BlocConsumer<EditProfileCubit, EditProfileState>(
       listener: (context, state) {
-        // TODO: implement listener
+        if (state is EditProfileInitialState) {
+          print("init");
+        }
       },
       builder: (context, state) {
-        UserModel userModel = SocialCubit.get(context).userModel;
+        var cubit = EditProfileCubit.get(context);
+
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -32,7 +34,7 @@ class SettingsScreen extends StatelessWidget {
                         width: double.infinity,
                         height: 160,
                         child: Image.network(
-                          '${userModel.cover}',
+                          '${cubit.userModel.cover}',
                           fit: BoxFit.fitWidth,
                         ),
                       ),
@@ -42,7 +44,8 @@ class SettingsScreen extends StatelessWidget {
                       backgroundColor: Colors.white,
                       child: CircleAvatar(
                         radius: 60,
-                        backgroundImage: NetworkImage(userModel.image!),
+                        backgroundImage:
+                            NetworkImage(cubit.userModel.image ?? ""),
                       ),
                     )
                   ],
@@ -52,14 +55,14 @@ class SettingsScreen extends StatelessWidget {
                 height: 15,
               ),
               Text(
-                userModel.userName!,
+                cubit.userModel.userName!,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 25,
                 ),
               ),
               Text(
-                userModel.bio!,
+                cubit.userModel.bio!,
                 style: const TextStyle(
                   color: Colors.grey,
                   fontSize: 20,
