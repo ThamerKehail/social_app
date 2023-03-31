@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/layout/cubit/social_cubit.dart';
 import 'package:social_app/modules/edit_profile/cubit/edit_profile_cubit.dart';
-import 'package:social_app/modules/posts/posts_screen.dart';
 import 'package:social_app/shared/components/components.dart';
+
+import '../modules/create_posts/create_posts_screen.dart';
 
 class SocialLayout extends StatelessWidget {
   const SocialLayout({Key? key}) : super(key: key);
@@ -26,7 +27,7 @@ class SocialLayout extends StatelessWidget {
             return Scaffold(
               appBar: AppBar(
                 title: Text(
-                  cubit.screenTitle[cubit.currentIndex!],
+                  cubit.screenTitle[cubit.currentIndex],
                   style: const TextStyle(color: Colors.black),
                 ),
                 actions: [
@@ -41,7 +42,7 @@ class SocialLayout extends StatelessWidget {
                       icon: const Icon(Icons.search, color: Colors.black)),
                 ],
               ),
-              body: cubit.screens[cubit.currentIndex!],
+              body: cubit.screens[cubit.currentIndex],
               bottomNavigationBar: BottomNavigationBar(
                 selectedIconTheme: const IconThemeData(
                   color: Colors.blue,
@@ -50,7 +51,7 @@ class SocialLayout extends StatelessWidget {
                 onTap: (index) {
                   cubit.changeBottomNavBar(index);
                 },
-                currentIndex: cubit.currentIndex!,
+                currentIndex: cubit.currentIndex,
                 items: const [
                   BottomNavigationBarItem(
                       icon: Icon(Icons.home_outlined), label: ""),

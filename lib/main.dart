@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
           create: (_) => RegisterCubit(),
         ),
         BlocProvider(
-          create: (_) => SocialCubit(),
+          create: (_) => SocialCubit()..getUserData(),
         ),
       ],
       child: MaterialApp(
